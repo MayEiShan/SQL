@@ -1,0 +1,108 @@
+
+select * from team;
++---------+-------------+--------------+
+| team_id | name        | founded_date |
++---------+-------------+--------------+
+|       1 | ManU        | 1880-12-05   |
+|       2 | Livepool    | 1892-04-03   |
+|       3 | Chelsea     | 1905-03-10   |
+|       4 | Arsenan     | 1886-06-10   |
+|       5 | Real Madrit | 1902-03-06   |
+|       6 | Barcelona   | 1899-11-29   |
+|       7 | Juventus    | 1897-11-01   |
+|       8 | Laliga      | 1929-01-01   |
+|       9 | Mancity     | 1880-08-07   |
+|      10 | Everton     | 1885-04-02   |
++---------+-------------+--------------+
+
+
+ 
+1.select * from player where team_id="5";
++-----------+-------+---------+------+--------+---------+--------+
+| player_id | name  | jersyno | age  | salary | team_id | height |
++-----------+-------+---------+------+--------+---------+--------+
+|        11 | Lucas |       6 |   38 | 500000 |       5 |      5 |
++-----------+-------+---------+------+--------+---------+--------+
+
+
+
+2.select * from player where salary>500000;
++-----------+---------+---------+------+--------+---------+--------+
+| player_id | name    | jersyno | age  | salary | team_id | height |
++-----------+---------+---------+------+--------+---------+--------+
+|         9 | Alisson |       4 |   25 | 600000 |       3 |      4 |
+|        14 | Reiss   |      22 |   26 | 700000 |       9 |      6 |
++-----------+---------+---------+------+--------+---------+--------+
+
+
+
+3.select name,(select SUM(salary) from player where player.team_id=team.team_id) as salary from team;
++-------------+---------+
+| name        | salary  |
++-------------+---------+
+| ManU        | 2100000 |
+| Livepool    | 1300000 |
+| Chelsea     |  600000 |
+| Arsenan     |  350000 |
+| Real Madrit |  500000 |
+| Barcelona   |  500000 |
+| Juventus    |  450000 |
+| Laliga      |  500000 |
+| Mancity     |  700000 |
+| Everton     |  500000 |
++-------------+---------+
+
+
+
+4.select * from player where height<5;
++-----------+---------+---------+------+--------+---------+--------+
+| player_id | name    | jersyno | age  | salary | team_id | height |
++-----------+---------+---------+------+--------+---------+--------+
+|         9 | Alisson |       4 |   25 | 600000 |       3 |      4 |
++-----------+---------+---------+------+--------+---------+--------+
+
+
+
+
+5.select team.name,(select AVG(salary) from player where player.team_id=team.team_id) as avg_salary from team;
++-------------+-------------+
+| name        | avg_salary  |
++-------------+-------------+
+| ManU        | 420000.0000 |
+| Livepool    | 433333.3333 |
+| Chelsea     | 600000.0000 |
+| Arsenan     | 350000.0000 |
+| Real Madrit | 500000.0000 |
+| Barcelona   | 500000.0000 |
+| Juventus    | 450000.0000 |
+| Laliga      | 500000.0000 |
+| Mancity     | 700000.0000 |
+| Everton     | 500000.0000 |
++-------------+-------------+
+
+
+6.select name,salary from player where salary in (select MIN(salary) from player);
++--------+--------+
+| name   | salary |
++--------+--------+
+| Marcus | 300000 |
++--------+--------+
+
+
+7. select name,salary from player where salary in (select MAX(salary) from player);
++-------+--------+
+| name  | salary |
++-------+--------+
+| Reiss | 700000 |
++-------+--------+
+
+
+8.select name from Player where age>30 AND salary>200000;
++--------+
+| name   |
++--------+
+| Ronado |
+| Daniel |
+| Lucas  |
+| Kepa   |
++--------+
