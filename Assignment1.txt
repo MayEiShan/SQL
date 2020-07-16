@@ -1,0 +1,74 @@
+select * from menu;
++---------+------------------+-------------+
+| menu_id | name             | description |
++---------+------------------+-------------+
+|       1 | fruit            | very good   |
+|       2 | traditional food | very good   |
+|       3 | hot drink        | very good   |
+|       4 | cold drink       | very good   |
+|       5 | pizza            | good        |
++---------+------------------+-------------+
+
+
+
+select * from food;
++---------+------------------+-------+---------+
+| food_id | name             | price | menu_id |
++---------+------------------+-------+---------+
+|       1 | orange juice     |  1000 |       4 |
+|       2 | strawberry juice |  1000 |       4 |
+|       3 | shan noodle      |  1500 |       2 |
+|       4 | mohinga          |   500 |       2 |
+|       5 | apple            |   500 |       1 |
+|       6 | coffee           |   700 |       3 |
++---------+------------------+-------+---------+
+
+
+select * from orderlist;
++----------+------------+------+---------+-------+------------+
+| order_id | sale_date  | qty  | food_id | price | totalprice |
++----------+------------+------+---------+-------+------------+
+|        1 | 2020-05-04 |    5 |       1 |  1000 |       5000 |
+|        2 | 2019-05-04 |    3 |       2 |  1000 |       3000 |
+|        3 | 2019-03-02 |    2 |       2 |  1000 |       2000 |
+|        4 | 2018-03-01 |    3 |       3 |  1500 |       4500 |
+|        5 | 2018-03-01 |    3 |       3 |   500 |       1500 |
+|        6 | 2018-03-01 |    3 |       5 |   500 |       1500 |
++----------+------------+------+---------+-------+------------+
+
+
+1.select food.name from food,orderlist where totalprice in (select MAX(totalprice) from orderlist) and orderlist.food_id=food.food_id;
++--------------+
+| name         |
++--------------+
+| orange juice |
++--------------+
+
+
+
+2.select food.name from food,orderlist where totalprice in (select MIN(totalprice) from orderlist) and orderlist.food_id=food.food_id;
++-------------+
+| name        |
++-------------+
+| shan noodle |
+| apple       |
++-------------+
+
+
+ 3. select sale_date,SUM(totalprice) AS totalprice from orderlist GROUP BY sale_date;
++------------+------------+
+| sale_date  | totalprice |
++------------+------------+
+| 2020-05-04 |       5000 |
+| 2019-05-04 |       3000 |
+| 2019-03-02 |       2000 |
+| 2018-03-01 |       7500 |
++------------+------------+
+
+
+4.select food.name,SUM(totalprice) AS totalsaleamount from food,orderlist where sale_date between '2018-03-01' and '2020-05-04';
++-------+-----------------+
+| name  | totalsaleamount |
++-------+-----------------+
+| apple |          105000 |
++-------+-----------------+
